@@ -16,7 +16,12 @@ export async function getOrderModule() {
       return { orders: orders || [] }
     },
     
-    createOrders: async (data: any[]) => {
+    createOrders: async (data: Array<{
+      cart_id?: string
+      customer_id?: string
+      currency_code?: string
+      metadata?: Record<string, unknown>
+    }>) => {
       const { data: orders, error } = await supabase
         .from('order')
         .insert(

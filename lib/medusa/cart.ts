@@ -1,8 +1,19 @@
 import { supabase } from '@/lib/supabase/client'
 
+interface CartData {
+  currency_code?: string
+  metadata?: Record<string, unknown>
+}
+
+interface LineItem {
+  product_id: string
+  quantity?: number
+  metadata?: Record<string, unknown>
+}
+
 export async function getCartModule() {
   return {
-    createCarts: async (data: any) => {
+    createCarts: async (data: CartData) => {
       const { data: cart, error } = await supabase
         .from('cart')
         .insert({
@@ -16,7 +27,7 @@ export async function getCartModule() {
       return [cart]
     },
     
-    retrieveCart: async (id: string, options?: any) => {
+    retrieveCart: async (id: string) => {
       const { data: cart, error } = await supabase
         .from('cart')
         .select('*')
@@ -27,11 +38,11 @@ export async function getCartModule() {
       return cart
     },
     
-    addLineItems: async ({ cartId, items }: any) => {
+    addLineItems: async ({ cartId, items }: { cartId: string; items: LineItem[] }) => {
       const { data: lineItems, error } = await supabase
         .from('cart_line_item')
         .insert(
-          items.map((item: any) => ({
+          items.map((item) => ({
             cart_id: cartId,
             product_id: item.product_id,
             quantity: item.quantity || 1,

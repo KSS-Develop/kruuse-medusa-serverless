@@ -1,9 +1,25 @@
 import { supabase } from '@/lib/supabase/client'
-import crypto from 'crypto'
+
+interface AuthData {
+  entity_id: string
+  provider_identities: Array<{
+    provider: string
+    entity_id: string
+    provider_metadata: {
+      email: string
+      password: string
+    }
+  }>
+}
+
+interface Credentials {
+  email: string
+  password: string
+}
 
 export async function getAuthModule() {
   return {
-    createAuthIdentities: async (data: any) => {
+    createAuthIdentities: async (data: AuthData) => {
       const { data: identity, error } = await supabase
         .from('auth_identity')
         .insert({
@@ -18,7 +34,7 @@ export async function getAuthModule() {
       return [identity]
     },
     
-    authenticate: async (provider: string, credentials: any) => {
+    authenticate: async (provider: string, credentials: Credentials) => {
       // Simple authentication implementation
       const { data: customer, error } = await supabase
         .from('customer')

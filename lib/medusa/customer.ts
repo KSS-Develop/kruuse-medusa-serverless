@@ -16,7 +16,12 @@ export async function getCustomerModule() {
       return { customers: customers || [] }
     },
     
-    createCustomers: async (data: any[]) => {
+    createCustomers: async (data: Array<{
+      email: string
+      first_name?: string
+      last_name?: string
+      metadata?: Record<string, unknown>
+    }>) => {
       const { data: customers, error } = await supabase
         .from('customer')
         .insert(

@@ -10,10 +10,10 @@ export async function GET() {
     }
     
     // List products using the correct v2 method
-    const products = await productService.listProducts()
+    const { products } = await productService.listProducts()
     
     return NextResponse.json({
-      products
+      products: products || []
     })
   } catch (error) {
     console.error("Error fetching products:", error)
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     const data = await req.json()
     
     // Create a new product using the correct v2 method
-    const product = await productService.createProducts(data)
+    const [product] = await productService.createProducts([data])
     
     return NextResponse.json({ product })
   } catch (error) {

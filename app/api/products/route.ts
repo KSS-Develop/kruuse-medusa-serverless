@@ -10,11 +10,9 @@ export async function GET() {
     }
     
     // List products using the correct v2 method
-    const { products } = await productService.listProducts()
+    const result = await productService.listProducts()
     
-    return NextResponse.json({
-      products: products || []
-    })
+    return NextResponse.json(result)
   } catch (error) {
     console.error("Error fetching products:", error)
     return NextResponse.json(

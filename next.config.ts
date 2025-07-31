@@ -1,7 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  serverExternalPackages: [
+    "@medusajs/product",
+    "@medusajs/cart",
+    "@medusajs/customer",
+    "@medusajs/auth",
+    "@medusajs/order",
+  ],
 };
 
 export default nextConfig;

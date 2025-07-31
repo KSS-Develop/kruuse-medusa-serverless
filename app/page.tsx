@@ -1,9 +1,14 @@
 "use client"
 
 import { useEffect, useState } from "react"
-
 export default function Home() {
-  const [products, setProducts] = useState<unknown[]>([])
+  interface Product {
+    id: string
+    title: string
+    description: string
+  }
+  
+  const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -53,7 +58,7 @@ export default function Home() {
       
       {!loading && !error && products.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {products.map((product: any) => (
+          {products.map((product) => (
             <div key={product.id} className="border p-4 rounded">
               <h3 className="font-semibold">{product.title}</h3>
               <p className="text-gray-600">{product.description}</p>

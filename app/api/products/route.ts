@@ -1,26 +1,19 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getProductModule } from "@/lib/medusa/product"
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const productService = await getProductModule()
     
-    // Get query parameters
-    const searchParams = req.nextUrl.searchParams
-    const limit = searchParams.get("limit") || "10"
-    const offset = searchParams.get("offset") || "0"
+    if (!productService) {
+      throw new Error("Product service not initialized")
+    }
     
-    // List products
-    const [products, count] = await productService.listAndCount({
-      limit: parseInt(limit),
-      offset: parseInt(offset)
-    })
+    // List products using the correct v2 method
+    const products = await productService.listProducts()
     
     return NextResponse.json({
-      products,
-      count,
-      limit: parseInt(limit),
-      offset: parseInt(offset)
+      products
     })
   } catch (error) {
     console.error("Error fetching products:", error)
@@ -34,10 +27,15 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const productService = await getProductModule()
+    
+    if (!productService) {
+      throw new Error("Product service not initialized")
+    }
+    
     const data = await req.json()
     
-    // Create a new product
-    const product = await productService.create(data)
+    // Create a new product using the correct v2 method
+    const product = await productService.createProducts(data)
     
     return NextResponse.json({ product })
   } catch (error) {

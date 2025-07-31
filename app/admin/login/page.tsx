@@ -21,6 +21,8 @@ export default function AdminLogin() {
       if (email === "admin@kruuse.cl" && password === "admin123") {
         // Guardar sesión (esto debería ser un JWT en producción)
         localStorage.setItem("adminAuth", "true")
+        // También establecer una cookie para el middleware
+        document.cookie = "adminAuth=true; path=/; max-age=86400"
         router.push("/admin")
       } else {
         setError("Credenciales inválidas")

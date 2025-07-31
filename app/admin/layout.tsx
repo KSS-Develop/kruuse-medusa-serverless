@@ -1,9 +1,4 @@
-import type { Metadata } from "next"
-
-export const metadata: Metadata = {
-  title: "Kruuse Admin",
-  description: "Panel de administración de Kruuse",
-}
+"use client"
 
 export default function AdminLayout({
   children,

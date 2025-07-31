@@ -10,9 +10,7 @@ export async function GET(
     const cartService = await getCartModule()
     
     // Retrieve cart by ID
-    const cart = await cartService.retrieveCart(id, {
-      relations: ["items", "items.product"],
-    })
+    const cart = await cartService.retrieveCart(id)
     
     return NextResponse.json({ cart })
   } catch (error) {

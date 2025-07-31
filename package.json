@@ -9,16 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@medusajs/auth": "^2.8.8",
-    "@medusajs/auth-emailpass": "^2.8.8",
-    "@medusajs/cart": "^2.8.8",
-    "@medusajs/customer": "^2.8.8",
-    "@medusajs/framework": "^2.8.8",
-    "@medusajs/modules-sdk": "^2.8.8",
-    "@medusajs/order": "^2.8.8",
-    "@medusajs/product": "^2.8.8",
-    "@medusajs/types": "^2.8.8",
-    "@medusajs/utils": "^2.8.8",
     "@supabase/supabase-js": "^2.53.0",
     "next": "15.4.5",
     "react": "19.1.0",

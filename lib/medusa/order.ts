@@ -1,23 +1,36 @@
-import { MedusaModule } from "@medusajs/modules-sdk"
-import { IOrderModuleService } from "@medusajs/types"
+import { supabase } from '@/lib/supabase/client'
 
-let orderService: IOrderModuleService | null = null
-
-export async function getOrderModule(): Promise<IOrderModuleService> {
-  if (orderService) {
-    return orderService
-  }
-
-  const { service } = await MedusaModule.bootstrap(
-    "order",
-    "orderScope",
-    {
-      database: {
-        clientUrl: process.env.POSTGRES_URL!,
-      },
+export async function getOrderModule() {
+  return {
+    listOrders: async () => {
+      const { data: orders, error } = await supabase
+        .from('order')
+        .select('*')
+        .order('created_at', { ascending: false })
+      
+      if (error) {
+        console.error('Error fetching orders:', error)
+        return { orders: [] }
+      }
+      
+      return { orders: orders || [] }
+    },
+    
+    createOrders: async (data: any[]) => {
+      const { data: orders, error } = await supabase
+        .from('order')
+        .insert(
+          data.map(order => ({
+            cart_id: order.cart_id,
+            customer_id: order.customer_id,
+            currency_code: order.currency_code || 'USD',
+            metadata: order.metadata || {}
+          }))
+        )
+        .select()
+      
+      if (error) throw error
+      return orders || []
     }
-  )
-
-  orderService = service as IOrderModuleService
-  return orderService
+  }
 }

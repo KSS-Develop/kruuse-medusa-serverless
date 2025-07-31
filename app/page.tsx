@@ -23,7 +23,16 @@ export default function Home() {
         throw new Error("Failed to fetch products")
       }
       const data = await response.json()
-      setProducts(data.products || [])
+      console.log("API Response:", data)
+      
+      // Handle different response formats
+      if (Array.isArray(data)) {
+        setProducts(data)
+      } else if (data.products && Array.isArray(data.products)) {
+        setProducts(data.products)
+      } else {
+        setProducts([])
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred")
     } finally {

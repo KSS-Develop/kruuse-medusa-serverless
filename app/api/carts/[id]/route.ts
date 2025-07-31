@@ -3,13 +3,14 @@ import { getCartModule } from "@/lib/medusa/cart"
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const cartService = await getCartModule()
     
     // Retrieve cart by ID
-    const cart = await cartService.retrieveCart(params.id, {
+    const cart = await cartService.retrieveCart(id, {
       relations: ["items", "items.product"],
     })
     
@@ -25,8 +26,9 @@ export async function GET(
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const cartService = await getCartModule()
     const data = await req.json()
@@ -34,7 +36,7 @@ export async function POST(
     // Add items to cart
     if (data.items) {
       const cart = await cartService.addLineItems({
-        cartId: params.id,
+        cartId: id,
         items: data.items,
       })
       

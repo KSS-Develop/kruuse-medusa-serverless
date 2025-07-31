@@ -1,0 +1,19 @@
+{
+  "functions": {
+    "app/api/products/route.ts": {
+      "maxDuration": 30
+    },
+    "app/api/cart/route.ts": {
+      "maxDuration": 30
+    },
+    "app/api/auth/route.ts": {
+      "maxDuration": 30
+    },
+    "app/api/customers/route.ts": {
+      "maxDuration": 30
+    },
+    "app/api/orders/route.ts": {
+      "maxDuration": 30
+    }
+  }
+}

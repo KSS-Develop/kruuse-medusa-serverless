@@ -1,20 +1,52 @@
-// For serverless deployment, we'll use a simpler approach
-// The complex initialization is handled by Medusa backend
+import { supabase } from '@/lib/supabase/client'
+import type { Product } from '@/lib/supabase/client'
+
 export async function getProductModule() {
-  // In a serverless environment, we'll directly query the database
-  // or use Medusa API endpoints instead of initializing modules
   return {
     listProducts: async () => {
-      // This is a placeholder - in production you would:
-      // 1. Query the database directly using Supabase client
-      // 2. Or call Medusa Admin API endpoints
-      // 3. Or use a dedicated product service
-      return { products: [] }
+      try {
+        const { data: products, error } = await supabase
+          .from('product')
+          .select('*')
+          .eq('status', 'published')
+          .order('created_at', { ascending: false })
+        
+        if (error) {
+          console.error('Error fetching products:', error)
+          return { products: [] }
+        }
+        
+        return { products: products || [] }
+      } catch (error) {
+        console.error('Unexpected error:', error)
+        return { products: [] }
+      }
     },
-    createProducts: async (data: unknown) => {
-      // Placeholder for create functionality
-      console.log("Creating product:", data)
-      return { id: "placeholder", ...(data as object) }
+    
+    createProducts: async (data: Partial<Product>) => {
+      try {
+        const { data: product, error } = await supabase
+          .from('product')
+          .insert({
+            title: data.title || 'Untitled Product',
+            description: data.description,
+            handle: data.handle || data.title?.toLowerCase().replace(/\s+/g, '-'),
+            status: data.status || 'draft',
+            metadata: data.metadata || {}
+          })
+          .select()
+          .single()
+        
+        if (error) {
+          console.error('Error creating product:', error)
+          throw error
+        }
+        
+        return product
+      } catch (error) {
+        console.error('Unexpected error:', error)
+        throw error
+      }
     }
   }
 }

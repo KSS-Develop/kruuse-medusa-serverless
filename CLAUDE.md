@@ -98,15 +98,48 @@ vercel logs [deployment-url]
 curl https://kruuse-medusa-serverless.vercel.app/api/products | jq
 ```
 
+## Admin Dashboard
+
+### Implementación
+Se creó un admin dashboard personalizado integrado en la aplicación Next.js:
+
+- **Ruta base**: `/admin`
+- **Login**: `/admin/login` (demo: admin@kruuse.cl / admin123)
+- **Secciones**:
+  - Dashboard principal con métricas
+  - Gestión de productos (`/admin/products`)
+  - Gestión de órdenes (`/admin/orders`)
+  - Gestión de clientes (`/admin/customers`)
+
+### Características
+- Layout con sidebar de navegación
+- Tablas responsivas para listar datos
+- Autenticación básica con localStorage (temporal)
+- Middleware para proteger rutas admin
+- Integrado con los mismos endpoints API
+
+### Archivos del Admin
+```
+/app/admin/
+  - layout.tsx          # Layout principal del admin
+  - page.tsx           # Dashboard
+  - login/page.tsx     # Página de login
+  - products/page.tsx  # Gestión de productos
+  - orders/page.tsx    # Gestión de órdenes  
+  - customers/page.tsx # Gestión de clientes
+/middleware.ts         # Protección de rutas
+```
+
 ## Próximos Pasos Sugeridos
-1. Implementar UI completa del e-commerce
-2. Agregar autenticación JWT real
-3. Implementar checkout completo
+1. Implementar autenticación JWT real con tokens seguros
+2. Agregar funcionalidad de crear/editar/eliminar productos
+3. Implementar gestión completa de órdenes
 4. Agregar gestión de inventario
 5. Configurar webhooks de Stripe para pagos
-6. Implementar búsqueda y filtros de productos
-7. Agregar sistema de reviews y ratings
+6. Implementar búsqueda y filtros avanzados
+7. Agregar exportación de datos (CSV/Excel)
 8. Configurar emails transaccionales
+9. Implementar UI del storefront
 
 ## Notas para el Desarrollo
 - Siempre hacer `npm run build` localmente antes de desplegar
